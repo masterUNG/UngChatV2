@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Ung Chat</string>
     <string name="email">Email :</string>
+    <string name="password">Password :</string>
+    <string name="name">Name :</string>
+    <string name="register">Register</string>
+    <string name="have_space">Have Space</string>
+    <string name="message_have_space">Please Fill All Blank</string>
 </resources>

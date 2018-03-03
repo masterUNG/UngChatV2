@@ -36,6 +36,8 @@
                         android:src="@drawable/ic_action_email" />
 
                     <EditText
+                        android:id="@+id/edtEmail"
+                        android:inputType="textEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email" />
@@ -54,15 +56,18 @@
                         android:src="@drawable/ic_action_pass" />
 
                     <EditText
+                        android:id="@+id/edtPassword"
+                        android:inputType="textPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/email" />
+                        android:hint="@string/password" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
             <Button
+                android:id="@+id/btnLogin"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
@@ -80,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Register"
+            android:text="@string/register"
             android:textColor="@color/colorAccent" />
 
 
