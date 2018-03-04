@@ -1,11 +1,13 @@
 package masterung.androidthai.in.th.ungchat.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,12 +18,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import masterung.androidthai.in.th.ungchat.MainActivity;
 import masterung.androidthai.in.th.ungchat.R;
+import masterung.androidthai.in.th.ungchat.ServiceActivity;
 import masterung.androidthai.in.th.ungchat.utiliti.MyAlert;
 
 /**
@@ -72,7 +78,7 @@ public class RegisterFragment extends Fragment {
         EditText emailEditText = getView().findViewById(R.id.edtEmail);
         EditText passwordEditText = getView().findViewById(R.id.edtPassword);
 
-        String nameString = nameEditText.getText().toString().trim();
+        final String nameString = nameEditText.getText().toString().trim();
         String emailString = emailEditText.getText().toString().trim();
         String passowrdString = passwordEditText.getText().toString().trim();
 
@@ -83,15 +89,29 @@ public class RegisterFragment extends Fragment {
             progressDialog.dismiss();
         } else {
 
-            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.createUserWithEmailAndPassword(emailString, passowrdString)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+
+                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest
+                                        .Builder().setDisplayName(nameString).build();
+                                firebaseUser.updateProfile(userProfileChangeRequest)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("4MarchV1", "Update Profile OK");
+                                            }
+                                        });
+
                                 Toast.makeText(getActivity(),
                                         "Success Register", Toast.LENGTH_SHORT).show();
-                                getActivity().getSupportFragmentManager().popBackStack();
+                                Intent intent = new Intent(getActivity(), ServiceActivity.class);
+                                startActivity(intent);
+                                getActivity().finish();
                             } else {
                                 myAlert.myDialog("Cannon Register",
                                         task.getException().getMessage());

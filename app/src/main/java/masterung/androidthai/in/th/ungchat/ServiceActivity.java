@@ -9,10 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ServiceActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private String displayNameString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,18 +23,23 @@ public class ServiceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_service);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
+       // Log.d("4MarchV1", "DistplayName ==> " + firebaseUser.getDisplayName());
 
 //        Check Status
-        if (firebaseAuth.getCurrentUser() == null) {
+        if (firebaseUser == null) {
             startActivity(new Intent(ServiceActivity.this, MainActivity.class));
             finish();
         } else {
+            displayNameString = firebaseUser.getDisplayName();
+            Log.d("4MarchV1", "DistplayName ==> " + firebaseUser.getDisplayName());
+
+            //        Create Toolbar
+            createToolbar();
 
         }
 
-
-//        Create Toolbar
-        createToolbar();
 
 
 
@@ -41,6 +49,7 @@ public class ServiceActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarService);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Service");
+        getSupportActionBar().setSubtitle(displayNameString + " login");
     }
 
     @Override
